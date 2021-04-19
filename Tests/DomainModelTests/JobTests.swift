@@ -21,6 +21,7 @@ class JobTests: XCTestCase {
         XCTAssert(job.calculateIncome(50) == 1000)
 
         job.raise(byAmount: 1000)
+        print("output: ", job.calculateIncome(50))
         XCTAssert(job.calculateIncome(50) == 2000)
 
         job.raise(byPercent: 0.1)

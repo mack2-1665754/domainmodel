@@ -67,13 +67,36 @@ public class Job {
         type = ty
     }
     
-    func calculateIncome(_ currentIncome : Int) -> Int {
-        return 0
+    func calculateIncome(_ hours : Int) -> Int {
+        switch self.type {
+        case .Hourly(let wage):
+            return Int(wage) * hours
+        case .Salary(let salary):
+            print("salary: ", Int(salary))
+            return Int(salary)
+        }
     }
     
-    func raise(byAmount: Double? = nil, byPercent: Double? = nil) -> Int {
-        return 0
+    func raise(byAmount: Double) {
+        switch self.type {
+        case .Hourly(let wage):
+            self.type = JobType.Hourly(byAmount + wage)
+        case .Salary(let salary):
+            self.type = JobType.Salary(UInt(byAmount + Double(salary)))
+            print("new salary wage: ", self.type)
+        }
     }
+    
+    func raise(byPercent: Double) {
+        switch self.type {
+        case .Hourly(let wage):
+            self.type = JobType.Hourly(byPercent * wage + wage)
+        case .Salary(let salary):
+            self.type = JobType.Salary(UInt(byPercent * Double(salary) + Double(salary)))
+            print("new salary wage: ", self.type)
+        }
+    }
+    
 }
 
 
@@ -95,19 +118,20 @@ public class Person {
     
     var spouse: Person? = nil{
         didSet(newVal) {
-            if age < 21 {
+            if age < 21 || spouse!.age < 21 {
                 spouse = nil
             }
         }
     }
+    
     init(firstName fn: String, lastName ln: String, age a: Int) {
         firstName = fn
         lastName = ln
         age = a
     }
     
-    func toString() -> String{
-        return "Person: firstName:\(firstName) lastName:\(lastName) age:\(age) job:\(String(describing: job?.type)) spouse:\(String(describing: spouse?.firstName))"
+    public func toString() -> String {
+        return String("[Person: firstName:\(firstName) lastName:\(lastName) age:\(age) job:\(job) spouse:\(spouse)]")
     }
 }
 

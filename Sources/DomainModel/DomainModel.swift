@@ -20,7 +20,6 @@ public struct Money {
         if self.currency == currency {
             return self
         }
-        print("starting amount: ", newAmount, self.currency)
         
         if self.currency == "GBP" {
             newAmount = newAmount * 2
@@ -29,7 +28,6 @@ public struct Money {
         } else if self.currency == "CAN" {
             newAmount = newAmount / 1.25
         }
-        print("amount in US: ", newAmount)
 
         if currency == "GBP" {
             newAmount = newAmount / 2
@@ -38,21 +36,23 @@ public struct Money {
         } else if currency == "CAN" {
             newAmount = (5 * newAmount) / 4
         }
-        
-        print("new amount: ", Int(newAmount))
-        
+                
         return Money(amount: Int(newAmount), currency: currency)
     }
     
     func add(_ amount : Money) -> Money {
-        var convertedAmount = amount.amount
+        var convertedAmount = amount
+        print("adding amount", amount.amount, amount.currency)
+        print("this amount", self.amount, self.currency)
         if amount.currency != self.currency {
             //convert
-            convertedAmount = amount.convert(self.currency).amount
+            convertedAmount = self.convert(amount.currency)
+            print("converted amount to add: ", convertedAmount.amount, convertedAmount.currency)
         }
         
-        let newAmount = self.amount + convertedAmount
-        return Money(amount: newAmount, currency: self.currency)
+        let newAmount = amount.amount + convertedAmount.amount
+        print("added amount: ", newAmount)
+        return Money(amount: newAmount, currency: amount.currency)
     }
     
     func subtract(_ amount : Money) -> Money {

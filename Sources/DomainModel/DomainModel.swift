@@ -16,17 +16,32 @@ public struct Money {
         // check the current currency type
         // normalize all types of currency on USD
         // then convert from USD to another type
-        var newAmount = Int()
+        var newAmount = Double(self.amount)
+        if self.currency == currency {
+            return self
+        }
+        print("starting amount: ", newAmount, self.currency)
         
-        if currency == "GBP" {
-            newAmount = self.amount * 2
+        if self.currency == "GBP" {
+            newAmount = newAmount * 2
         } else if self.currency == "EUR" {
-            newAmount = self.amount * 1
+            newAmount = newAmount / 1.5
         } else if self.currency == "CAN" {
-            newAmount = self.amount * 1
+            newAmount = newAmount / 1.25
+        }
+        print("amount in US: ", newAmount)
+
+        if currency == "GBP" {
+            newAmount = newAmount / 2
+        } else if currency == "EUR" {
+            newAmount = (3 * newAmount) / 2
+        } else if currency == "CAN" {
+            newAmount = (5 * newAmount) / 4
         }
         
-        return Money(amount: newAmount, currency: currency)
+        print("new amount: ", Int(newAmount))
+        
+        return Money(amount: Int(newAmount), currency: currency)
     }
     
     func add(_ amount : Money) -> Money {
